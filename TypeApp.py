@@ -2,11 +2,6 @@ from tkinter import *
 from tkinter import colorchooser, messagebox, filedialog, simpledialog, END
 import time
 
-# Functions
-
-# file functions
-
-
 def auto_save():
     global autosave_interval
     text = text_space.get('1.0', END)
@@ -113,8 +108,6 @@ def word_count():
     messagebox.showinfo(title="Word Count", message=f"Words: {length}")
 
 
-# font functions
-
 def highlight_selected_text():
 
     start_index = text_space.index("sel.first")
@@ -156,9 +149,6 @@ def change_font_color():
     if new_color[1] is not None:
         text_space.config(fg=new_color[1])
 
-
-# Global Variables
-
 theme = "#FFFCC1"
 font_color = "Black"
 font = "Arial"
@@ -175,7 +165,7 @@ font_size_list = [10, 12, 14, 16, 18, 20, 22, 24, 26, 28]
 clock_state = True
 autosave_interval = 60
 
-# Software Code
+
 window = Tk()
 window.config(bg=theme)
 window.title("TypeApp")
@@ -193,13 +183,11 @@ text_space.pack(fill=BOTH, expand=True)
 menu_bar = Menu(window)
 window.config(menu=menu_bar)
 
-
 file_menu = Menu(menu_bar, tearoff=0)
 file_menu.add_command(label="New", command=new_file)
 file_menu.add_command(label="Open", command=open_file)
 file_menu.add_command(label="Save", command=save_file)
 menu_bar.add_cascade(label="File", menu=file_menu)
-
 
 edit_menu = Menu(menu_bar, tearoff=0)
 
