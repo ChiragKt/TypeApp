@@ -7,9 +7,7 @@ def auto_save():
     text = text_space.get('1.0', END)
     with open("TypeApp-AUTOSAVE.txt", 'w') as file:
         file.write(text)
-
-    window.after(autosave_interval*1000, auto_save)
-
+    window.after(autosave_interval * 1000, auto_save)
 
 def prompt_save():
     save_prompt = messagebox.askyesnocancel(title="WARNING!", message="Do you want to save the current file?")
@@ -19,14 +17,13 @@ def prompt_save():
         save_file()
     return True
 
-
 def new_file():
     if text_space.get("1.0", "end-1c") != "":
-        if prompt_save() is True:
+        if prompt_save():
             text_space.delete('1.0', END)
+            messagebox.showinfo(title="Alert", message="New File Created")
     else:
-        messagebox.showinfo(title="Alert" , message="New File Created")
-
+        messagebox.showinfo(title="Alert", message="New File Created")
 
 def open_file():
     if not prompt_save():
@@ -37,7 +34,6 @@ def open_file():
         try:
             with open(path, 'r') as file:
                 text = file.read()
-    
                 text_space.delete('1.0', END)
                 text_space.insert('1.0', text)
         except Exception as e:
@@ -45,38 +41,34 @@ def open_file():
     else:
         messagebox.showinfo(message="No file selected.")
 
-
 def save_file():
-    path = filedialog.asksaveasfilename(defaultextension="txt", filetypes=[("Text File",".txt"),("Other", ".*")])
+    path = filedialog.asksaveasfilename(defaultextension="txt", filetypes=[("Text File", ".txt"), ("Other", ".*")])
     if path:
         with open(path, 'w') as file:
             text = text_space.get('1.0', END)
             file.write(text)
     else:
-        messagebox.showerror(message="File not saved. ")
-
+        messagebox.showerror(message="File not saved.")
 
 def current_time():
-    if clock_state is True:
+    if clock_state:
         time_string = time.strftime("%I:%M:%S %p")
         clock.config(text=time_string)
         window.after(1000, current_time)
 
-
 def clock_on_off():
     global clock_state
-    if clock_state is True:
+    if clock_state:
         clock_state = False
         clock.config(text="")
     else:
         clock_state = True
         current_time()
 
-
 def change_clock_size(size):
-    if clock_state is True:
+    if clock_state:
         if size == "Small":
-                clock.config(font=("Arial", 10, "bold"))
+            clock.config(font=("Arial", 10, "bold"))
         elif size == "Medium":
             clock.config(font=("Arial", 13, "bold"))
         elif size == "Large":
@@ -84,7 +76,6 @@ def change_clock_size(size):
 
 def about():
     messagebox.showinfo(message="Developed By Chirag Kataria\nVersion: 1.0")
-#text functions
 
 def find_and_replace():
     find_word = simpledialog.askstring("Find & Replace", "Enter the word to Find. (Case-Sensitive)")
@@ -93,13 +84,11 @@ def find_and_replace():
     if find_word and replace_word:
         text = text_space.get("1.0", "end")
         updated_text = text.replace(find_word, replace_word)
-
         if text == updated_text:
             messagebox.showinfo("No Match", "No occurrences of '{}' found.".format(find_word))
         else:
             text_space.delete("1.0", "end")
             text_space.insert("1.0", updated_text)
-
 
 def word_count():
     text = text_space.get('1.0', "end-1c")
@@ -107,25 +96,18 @@ def word_count():
     length = len(text_list)
     messagebox.showinfo(title="Word Count", message=f"Words: {length}")
 
-
 def highlight_selected_text():
-
     start_index = text_space.index("sel.first")
     end_index = text_space.index("sel.last")
-
     is_highlighted = "highlight" in text_space.tag_names(start_index)
-
     if is_highlighted:
         text_space.tag_remove("highlight", start_index, end_index)
-
     else:
         text_space.tag_add("highlight", start_index, end_index)
-
 
 def change_background():
     global theme
     new_theme = colorchooser.askcolor()
-
     if new_theme[1] is not None:
         text_space.config(bg=new_theme[1])
         theme = new_theme[1]
@@ -165,7 +147,6 @@ font_size_list = [10, 12, 14, 16, 18, 20, 22, 24, 26, 28]
 clock_state = True
 autosave_interval = 60
 
-
 window = Tk()
 window.config(bg=theme)
 window.title("TypeApp")
@@ -174,7 +155,7 @@ window.geometry("720x720")
 app_name = Label(text="TypeApp", fg="#A555EC", bg=theme, font=("Helvetica", 25, "bold"))
 app_name.pack(side="top", fill="x")
 
-clock = Label(window, font=("Arial", 12, "bold"),bg=theme,fg="Black")
+clock = Label(window, font=("Arial", 12, "bold"), bg=theme, fg="Black")
 clock.place(relx=1.0, rely=0, anchor='ne')
 
 text_space = Text(window, bg=theme, fg=font_color, font=(font, font_size), undo=True)
@@ -207,14 +188,12 @@ clock_size_menu = Menu(clock_menu)
 clock_menu.add_command(label="On/Off", command=clock_on_off)
 clock_menu.add_cascade(label="Size", menu=clock_size_menu)
 
-
 for size in clock_size_list:
     clock_size_menu.add_command(label=size, command=lambda s=size: change_clock_size(s))
 
-
 background_color_menu = Menu(edit_menu)
-background_color_menu.add_command(label="Default", command= set_default_background)
-background_color_menu.add_command(label="Choose Color", command= change_background)
+background_color_menu.add_command(label="Default", command=set_default_background)
+background_color_menu.add_command(label="Choose Color", command=change_background)
 edit_menu.add_cascade(label="Font Size", menu=font_size_menu)
 edit_menu.add_command(label="Font Color", command=change_font_color)
 edit_menu.add_cascade(label="Background Color", menu=background_color_menu)
@@ -231,14 +210,10 @@ text_menu.add_command(label="Redo", command=text_space.edit_redo)
 about_menu = Menu(menu_bar)
 about_menu.add_command(label="About", command=about)
 
-
 menu_bar.add_cascade(label="Text", menu=text_menu)
 menu_bar.add_cascade(label="Format", menu=edit_menu)
 menu_bar.add_cascade(label="Clock", menu=clock_menu)
 menu_bar.add_cascade(label="Help", menu=about_menu)
-
-
-#key binds
 
 window.bind("<Control-z>", lambda event: text_space.edit_undo())
 window.bind("<Control-Z>", lambda event: text_space.edit_undo())
