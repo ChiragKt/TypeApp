@@ -143,7 +143,7 @@ font_list = [
 ]
 
 clock_size_list = ["Small", "Medium", "Large"]
-font_size_list = [10, 12, 14, 16, 18, 20, 22, 24, 26, 28]
+font_size_list = [10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 35, 37, 40, 45, 47, 49, 50]
 clock_state = True
 autosave_interval = 60
 
